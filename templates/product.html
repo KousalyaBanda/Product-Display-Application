@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+</head>
+<body>
+  <main class="page">
+    <nav class="nav">
+      <a class="brand" href="/">Product<span>Hub</span></a>
+      <a class="nav-link" href="/">Home</a>
+    </nav>
+
+    <header class="page-heading">
+      <p class="eyebrow">OUR CATALOGUE</p>
+      <h1>Explore <span>products.</span></h1>
+      <p class="subtitle">A live list of products loaded from your MySQL database.</p>
+    </header>
+
+    {% if error %}
+      <div class="notice error" role="alert">{{ error }}</div>
+    {% elif products %}
+      <section class="product-grid" aria-label="Product list">
+        {% for product in products %}
+          <article class="product-card">
+            <div class="product-art" aria-hidden="true">
+              <span>{{ product.name[0] | upper }}</span>
+            </div>
+            <div class="product-info">
+              <p class="product-id">PRODUCT #{{ product.id }}</p>
+              <h2>{{ product.name }}</h2>
+              <p class="description">{{ product.description or "A great addition to your collection." }}</p>
+              <div class="card-bottom">
+                <p class="price">₹{{ "%.2f" | format(product.price) }}</p>
+                <span class="available">Available</span>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </section>
+    {% else %}
+      <div class="notice">No products found yet. Add records to the <code>products</code> table and refresh this page.</div>
+    {% endif %}
+
+    <footer>ProductHub <span>·</span> FastAPI + Jinja2 + MySQL</footer>
+  </main>
+</body>
+</html>
