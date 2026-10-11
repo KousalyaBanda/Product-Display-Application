@@ -113,3 +113,4 @@ Refresh `/products` to see the new product.
 ## Optional next step: SQLAlchemy ORM
 
 This starter uses a direct database driver (Python DB-API) to match the assignment's PDBC/driver approach. To move to SQLAlchemy later, replace the direct connection and cursor query with an SQLAlchemy engine, `Session`, and a `Product` model. The Jinja2 templates can remain largely unchanged.
+# Product-Display-Application
