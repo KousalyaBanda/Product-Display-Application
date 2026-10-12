@@ -85,9 +85,3 @@ def products(request: Request):
     finally:
         if connection is not None and connection.is_connected():
             connection.close()
-
-
-@app.get("/health")
-def health():
-    """Small endpoint useful for checking whether the app is running."""
-    return {"status": "ok"}
