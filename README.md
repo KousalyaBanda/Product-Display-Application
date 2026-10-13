@@ -1,116 +1,55 @@
-# Product Display Application
+# Product Display Application — FastAPI, Jinja2, MySQL, SQLAlchemy ORM
 
-A beginner-friendly Product Display App built with **FastAPI, Jinja2, and MySQL**. Product records are fetched from MySQL using the Python MySQL Connector (DB-API) and rendered dynamically in a Jinja2 template.
+## Features
+- Login form using FastAPI Form fields and a signed session cookie.
+- After successful login, redirects directly to `/products`.
+- Product records are fetched from MySQL using SQLAlchemy ORM.
+- Product details are rendered dynamically with Jinja2.
+- Logout clears the session.
+- Simple HTML only; no CSS required.
 
-## 1. Project structure
-
+## Project structure
 ```text
-product_display_app/
-├── main.py
-├── schema.sql
-├── requirements.txt
-├── .env.example
-├── .gitignore
-├── templates/
-│   ├── home.html
-│   └── product.html
-└── static/
-    └── style.css
+main.py
+database.py
+model.py
+schema.sql
+requirements.txt
+.env.example
+.gitignore
+templates/
+  home.html
+  product.html
 ```
 
-## 2. Requirements
+## Setup (Windows / VS Code)
 
-- Python 3.10+
-- MySQL Server
-- VS Code (recommended)
+1. Start MySQL Server.
+2. Open MySQL Workbench and execute `schema.sql`. This creates the `product_store` database and sample products.
+3. Create and activate a virtual environment:
+   ```bash
+   python -m venv venv
+   venv\\Scripts\\activate
+   ```
+4. Install packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
+5. Copy `.env.example` to `.env` and set your MySQL password. Change the login credentials and session secret as well.
+6. Start the server from this folder:
+   ```bash
+   uvicorn main:app --reload
+   ```
+7. Open http://127.0.0.1:8000/
 
-## 3. Create and activate a virtual environment
+Example login credentials if you leave the values in `.env` unchanged:
+- Username: `admin`
+- Password: `change_this_password`
 
-Windows:
+## How ORM works here
+`model.py` defines `Product`, which maps to the `products` table. In `main.py`, `db.query(Product).order_by(Product.id).all()` uses SQLAlchemy ORM to return Product objects. Jinja2 displays those objects in `templates/product.html`.
 
-```bash
-python -m venv .venv
-.venv\\Scripts\\activate
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-## 4. Set up MySQL
-
-1. Start your MySQL server.
-2. Open MySQL Workbench or the MySQL command line.
-3. Run the SQL in `schema.sql`. This creates `product_store`, creates the `products` table, and inserts sample products.
-
-Command-line alternative:
-
-```bash
-mysql -u root -p < schema.sql
-```
-
-## 5. Configure database credentials
-
-Copy `.env.example` to a new file named `.env` and edit the password to match your MySQL installation:
-
-```env
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=your_actual_password
-DB_NAME=product_store
-```
-
-Do not upload `.env` to GitHub. It is included in `.gitignore`.
-
-## 6. Run the application
-
-From the project root, run:
-
-```bash
-uvicorn main:app --reload
-```
-
-Open these URLs:
-
-- Home page: http://127.0.0.1:8000/
-- Product display: http://127.0.0.1:8000/products
-- Health check: http://127.0.0.1:8000/health
-
-## 7. How it works
-
-1. FastAPI receives a request to `/products`.
-2. `get_db_connection()` connects to MySQL using the `.env` settings.
-3. `cursor.execute()` runs a `SELECT` query against the `products` table.
-4. `fetchall()` retrieves the product rows.
-5. The route passes the records to `product.html` in the template context.
-6. Jinja2 loops through `products` and renders a card for each product.
-7. The database connection is closed after the request.
-
-## 8. Add a product
-
-Run a query in MySQL Workbench:
-
-```sql
-USE product_store;
-
-INSERT INTO products (name, price, description)
-VALUES ('Keyboard', 1499.00, 'A compact keyboard for everyday typing.');
-```
-
-Refresh `/products` to see the new product.
-
-## Troubleshooting
-
-- **Access denied:** verify `DB_USER` and `DB_PASSWORD` in `.env`.
-- **Unknown database:** run `schema.sql`.
-- **Can't connect to MySQL:** make sure MySQL Server is running and `DB_PORT` is correct.
-- **No products found:** check the rows in `product_store.products`.
-- **Template/static errors:** run Uvicorn from the project root folder.
-
-## Optional next step: SQLAlchemy ORM
-
-This starter uses a direct database driver (Python DB-API) to match the assignment's PDBC/driver approach. To move to SQLAlchemy later, replace the direct connection and cursor query with an SQLAlchemy engine, `Session`, and a `Product` model. The Jinja2 templates can remain largely unchanged.
-# Product-Display-Application
+## Important
+- The database (`product_store`) must exist before the app starts. Run `schema.sql` first.
+- Do not commit `.env` to GitHub.
+- This is a learning/demo login. For public production use, add password hashing, CSRF protection, HTTPS, rate limiting, and a proper users table.

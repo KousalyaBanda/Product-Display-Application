@@ -8,8 +8,14 @@ CREATE TABLE IF NOT EXISTS products (
     description TEXT
 );
 
-INSERT INTO products (name, price, description) VALUES
-('Laptop', 70000.00, 'A reliable laptop for work, study, and everyday tasks.'),
-('iPhone', 87000.00, 'A premium smartphone with a bright display and powerful camera.'),
-('Headphones', 2499.00, 'Comfortable headphones for music, calls, and focus.'),
-('Smart Watch', 5999.00, 'Track activity and stay connected throughout the day.');
+INSERT INTO products (name, price, description)
+SELECT 'Laptop', 70000.00, 'A laptop for work and study.'
+WHERE NOT EXISTS (SELECT 1 FROM products WHERE name = 'Laptop');
+
+INSERT INTO products (name, price, description)
+SELECT 'Headphones', 2499.00, 'Headphones for music and calls.'
+WHERE NOT EXISTS (SELECT 1 FROM products WHERE name = 'Headphones');
+
+INSERT INTO products (name, price, description)
+SELECT 'Smart Watch', 5999.00, 'A watch for activity tracking.'
+WHERE NOT EXISTS (SELECT 1 FROM products WHERE name = 'Smart Watch');

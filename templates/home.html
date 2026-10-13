@@ -1,25 +1,30 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ title }}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Product Display</title>
 </head>
 <body>
-  <main class="hero">
-    <nav class="nav">
-      <a class="brand" href="/">Product<span>Hub</span></a>
-      <a class="nav-link" href="/products">View products</a>
-    </nav>
-    <section class="hero-content">
-      <p class="eyebrow">SIMPLE • FAST • DYNAMIC</p>
-      <h1>Discover products<br><span>you'll love.</span></h1>
-      <p class="subtitle">Product details are fetched from MySQL and displayed dynamically with FastAPI and Jinja2 templates.</p>
-      <a class="button" href="/products">Explore products <span aria-hidden="true">→</span></a>
-    </section>
-    <div class="hero-note">
-      <span class="dot"></span> Powered by FastAPI · Jinja2 · MySQL
-    </div>
-  </main>
+    <h1>Product Display Application</h1>
+    <h2>Login</h2>
+
+    {% if error %}
+        <p style="color: red;" role="alert">{{ error }}</p>
+    {% endif %}
+
+    <form action="/login" method="post">
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <br>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <br>
+        <button type="submit">Login</button>
+    </form>
 </body>
 </html>

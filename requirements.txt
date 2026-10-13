@@ -2,5 +2,7 @@ fastapi
 uvicorn[standard]
 jinja2
 python-multipart
+SQLAlchemy
 mysql-connector-python
 python-dotenv
+itsdangerous
